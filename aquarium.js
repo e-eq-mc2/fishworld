@@ -44,18 +44,23 @@ export class Aquarium {
     const fileName = `img/fish_${i}.png`
     const material = this.plateMaterial(fileName)
 
-    const sizeList = [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 1.0, 1.0, 2.0]
+    const sizeList = [
+      0.4, 0.4, 0.4, 0.4,
+      0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
+      0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
+      2.0, 2.0,
+  ]
     const s = Common.pickup(sizeList)
     const w = s
     const h = s
-    const wsegs = s < 1.0 ? 2 : 8
+    const wsegs = s < 1.0 ? 4 : 16
     const hsegs = s < 1.0 ? 1 : 1
     const key  =`geometry_${w}_${h}_${wsegs}_${hsegs}` 
     const cached = this.cache.get( key )
     //const geometry = this.plateGeometry(w, h, wsegs, hsegs)
     const geometry = new THREE.PlaneGeometry(w, h, wsegs, hsegs)
     geometry.rotateZ( Math.PI )
-    if ( !cached  ) this.cache.set(key, geometry)
+    if ( ! cached  ) this.cache.set(key, geometry)
 
     const objectToCurve = new THREE.Mesh(geometry, material)
     objectToCurve.frustumCulled = false
