@@ -40,13 +40,13 @@ function init() {
     0.1,
     500
   )
-  camera.position.set(0, 0, 11)
+  camera.position.set(-1, 0, 15)
   camera.lookAt( scene.position )      
 
 
   // カメラコントローラーを作成
   const controls = new OrbitControls(camera, document.body)
-  controls.zoomSpeed = 0.08
+  controls.zoomSpeed = 0.05
 
   //const light = new THREE.DirectionalLight( 0xffffff )
   //light.position.set(10, 10, 15)
@@ -60,7 +60,7 @@ function init() {
   //const axesHelper = new THREE.AxesHelper( 5 )
   //scene.add( axesHelper )
 
-  aquarium = new Aquarium(500)
+  aquarium = new Aquarium(400)
   aquarium.eachFish( f => scene.add(f) )
 
   renderer = new THREE.WebGLRenderer( { antialias: false, powerPreference: "high-performance"} )
@@ -75,12 +75,12 @@ function init() {
   fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( window.innerWidth  * pixelRatio )
   fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( window.innerHeight * pixelRatio )
 
-  const smaaPass = new SMAAPass( window.innerWidth * renderer.getPixelRatio(), window.innerHeight * renderer.getPixelRatio() )
+  //const smaaPass = new SMAAPass( window.innerWidth * renderer.getPixelRatio(), window.innerHeight * renderer.getPixelRatio() )
 
   const renderPass = new RenderPass( scene, camera )
   composer = new EffectComposer( renderer )
   composer.addPass( renderPass )
-  composer.addPass( fxaaPass )
+  //composer.addPass( fxaaPass )
   //composer.addPass( smaaPass )
 
   stats = new Stats()
@@ -97,7 +97,6 @@ function onWindowResize() {
   composer.setSize( window.innerWidth, window.innerHeight )
 
   const pixelRatio = renderer.getPixelRatio()
-
   fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( window.innerWidth  * pixelRatio )
   fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( window.innerHeight * pixelRatio )
 }
@@ -128,7 +127,20 @@ document.body.addEventListener("keydown", function(e) {
       console.log(`Active Drawcalls    : ${renderer.info.render.calls}`)
       console.log(`Textures in Memory  : ${renderer.info.memory.textures}`)
       console.log(`Geometries in Memory: ${renderer.info.memory.geometries}`)
+      break
 
+    case e.key == 's':
+      {
+        const s = aquarium.decreaseSpeed()
+        console.log(`SpeeedScale: ${s}`)
+      }
+      break
+
+    case e.key == 'S':
+      {
+        const s = aquarium.increaseSpeed()
+        console.log(`SpeeedScale: ${s}`)
+      }
       break
 
     default:

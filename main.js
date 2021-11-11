@@ -1,25 +1,33 @@
 // main.js
 
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, Menu, ipcMain} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, globalShortcut} = require('electron')
 const path = require('path')
 const Music = require('./music.js')
+
+function isWindows() { return process.platform == 'win32' }
+function isMac() { return process.platform == 'darwin' }
 
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     useContentSize: true,
-    transparent: true,
-    show: true,
+    //show: true,
     frame: false,
-    resizable: true,
+    //x: mainWindowState.x,
+    //y: mainWindowState.y,
+    //width: mainWindowState.width,
+    //height: mainWindowState.
     autoHideMenuBar: true,
-    //'always-on-top': true,
+    //'always-on-top': false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-  mainWindow.setFullScreen(true);
+
+  mainWindow.setResizable(true)
+
+  if ( isMac() ) mainWindow.setFullScreen(true)
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
@@ -53,6 +61,19 @@ app.whenReady().then(() => {
     })
 
   })
+
+  globalShortcut.register('Ctrl+Q', function() {
+    const windowState = win.getBounds()
+    console.log(windowState)
+
+    if ( isWindows() ) app.quit()
+  })
+
+  globalShortcut.register('Ctrl+B', function() {
+    // 2x 1920x1080 
+    win.setSize(3840, 1080)
+  })
+
 })
 
 app.on('before-quit', function (e) {
@@ -63,7 +84,7 @@ app.on('before-quit', function (e) {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
+  if ( ! isMacOSX() ) app.quit()
 })
 
 // In this file you can include the rest of your app's specific main process

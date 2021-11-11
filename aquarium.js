@@ -1,19 +1,21 @@
 const THREE = require('three');
 import {Flow} from 'three/examples/jsm/modifiers/CurveModifier.js'
-const Common     = require("./lib/common.js")
+const Common = require("./lib/common.js")
 
 export class Aquarium {
   constructor(numFish) {
     this.flows  = []
     this.speeds = []
+    this.speedScale = 1.0
     this.cache = new Cache()
 
-    const speedFactors = [1.0, 1.0, 1.0, 1.0, 1.0, 1.5, 1.5, 2.0]
+    const baseSpeed   = 0.0003
+    const speedScales = [0.8, 0.8, 0.8, 0.8, 1.0, 1.0, 1.5]
     for (let i=0; i < numFish; ++i) {
       const flow = this.layAnEgg(i)
       this.flows.push(flow)
 
-      const speed = Common.pickup(speedFactors) * 0.0005
+      const speed = baseSpeed * Common.pickup(speedScales) 
       this.speeds.push(speed)
     }
   }
@@ -21,10 +23,19 @@ export class Aquarium {
   update() {
     for (let i=0; i < this.flows.length; ++i) {
       const flow  = this.flows[i]
-      //const speed = this.speeds[i]
-      const speed = 0.00045
+      const speed = this.speeds[i] * this.speedScale
       flow.moveAlongCurve( speed )
     }
+  }
+
+  increaseSpeed(ds = 0.1) {
+    this.speedScale += ds
+    return this.speedScale
+  }
+
+  decreaseSpeed(ds = 0.1) {
+    this.speedScale -= ds
+    return this.speedScale
   }
 
   eachFish(callback) {
@@ -40,34 +51,36 @@ export class Aquarium {
     curve.curveType = 'centripetal';
     curve.closed = true;
 
-    const i        = Common.random(0, 18)
-    const fileName = `img/fish_${i}.png`
+    const i        = Common.random(1, 48)
+    //const fileName = `img/fish_${i}.png`
+    const fileName = `img/${i}.png`
     const material = this.plateMaterial(fileName)
 
     const sizeList = [
-      0.4, 0.4, 0.4, 0.4,
+      //0.4, 0.4,
       0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
       0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
-      2.0, 2.0,
-  ]
+      1.0,
+      3.0,
+    ]
     const s = Common.pickup(sizeList)
     const w = s
     const h = s
-    const wsegs = s < 1.0 ? 4 : 16
-    const hsegs = s < 1.0 ? 1 : 1
+    const wsegs = s < 1.0 ? 8 : 16
+    const hsegs = s < 1.0 ? 2 : 4
     const key  =`geometry_${w}_${h}_${wsegs}_${hsegs}` 
     const cached = this.cache.get( key )
     //const geometry = this.plateGeometry(w, h, wsegs, hsegs)
     const geometry = new THREE.PlaneGeometry(w, h, wsegs, hsegs)
     geometry.rotateZ( Math.PI )
-    if ( ! cached  ) this.cache.set(key, geometry)
+    if ( ! cached ) this.cache.set(key, geometry)
 
     const objectToCurve = new THREE.Mesh(geometry, material)
     objectToCurve.frustumCulled = false
     objectToCurve.matrixAutoUpdate = false
 
-    const flow = new Flow( objectToCurve );
-    flow.updateCurve(0, curve );
+    const flow = new Flow( objectToCurve )
+    flow.updateCurve(0, curve)
 
     return flow
   }
@@ -180,13 +193,13 @@ export class Aquarium {
     const initialPoints = Array(num)
 
     const da     = 2 * Math.PI / initialPoints.length
-    const radius = Common.randomReal(7, 9)
+    const radius = Common.randomReal(12, 14)
     const h = 2.5
     const offY   = Common.randomReal(-h/2.0, h/2.0)
 
     const sa  = Common.random(20, 25)
-    const srx = 0.15
-    const srz = 0.15
+    const srx = 0.3
+    const srz = 0.3
 
     const say0 = 2
     const sry0 = 0.5
