@@ -40,7 +40,7 @@ function init() {
     0.1,
     500
   )
-  camera.position.set(-1, 0, 15)
+  camera.position.set(-1, 0, 24)
   camera.lookAt( scene.position )      
 
 
@@ -52,19 +52,26 @@ function init() {
   //light.position.set(10, 10, 15)
   //light.intensity = 0.8
   //scene.add( light )
+
+
+  //const spotLight = new THREE.SpotLight( 0xffffff );
+  //spotLight.position.set( 0, 0, 25 );
+  //spotLight.angle = 30 * 0.01745329252 
+  //scene.add( spotLight )
+
   //
-  //const light2 = new THREE.AmbientLight( 0x87ceeb )
-  //light2.intensity = 0.6
-  //scene.add( light2 )
-  //
-  //const axesHelper = new THREE.AxesHelper( 5 )
-  //scene.add( axesHelper )
+  const ambientLight = new THREE.AmbientLight( 0xffffff )
+  ambientLight.intensity = 1.0
+  scene.add( ambientLight )
+  
+  const axesHelper = new THREE.AxesHelper( 5 )
+  scene.add( axesHelper )
 
   aquarium = new Aquarium(400)
   aquarium.eachFish( f => scene.add(f) )
 
-  renderer = new THREE.WebGLRenderer( { antialias: false, powerPreference: "high-performance"} )
-  renderer.setPixelRatio( window.devicePixelRatio )
+  renderer = new THREE.WebGLRenderer( { antialias: true} )
+  //renderer.setPixelRatio( window.devicePixelRatio )
   //renderer.setPixelRatio( 1.5 )
   //renderer.setPixelRatio( 1 )
   renderer.setSize( window.innerWidth, window.innerHeight )
@@ -84,7 +91,7 @@ function init() {
   //composer.addPass( smaaPass )
 
   stats = new Stats()
-  document.body.appendChild( stats.dom )
+  //document.body.appendChild( stats.dom )
 
   window.addEventListener( 'resize', onWindowResize )
 }

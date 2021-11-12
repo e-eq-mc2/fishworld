@@ -14,8 +14,8 @@ function createWindow () {
     useContentSize: true,
     //show: true,
     frame: false,
-    //x: mainWindowState.x,
-    //y: mainWindowState.y,
+    x: 0,
+    y: 0,
     //width: mainWindowState.width,
     //height: mainWindowState.
     autoHideMenuBar: true,
@@ -84,7 +84,7 @@ app.on('before-quit', function (e) {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', function () {
-  if ( ! isMacOSX() ) app.quit()
+  if ( ! isMac() ) app.quit()
 })
 
 // In this file you can include the rest of your app's specific main process

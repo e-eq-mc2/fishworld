@@ -60,13 +60,14 @@ export class Aquarium {
       //0.4, 0.4,
       0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
       0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
-      1.0,
+      1.0, 
       3.0,
+      5.0,
     ]
     const s = Common.pickup(sizeList)
     const w = s
     const h = s
-    const wsegs = s < 1.0 ? 8 : 16
+    const wsegs = s < 1.0 ? 4 : 8
     const hsegs = s < 1.0 ? 2 : 4
     const key  =`geometry_${w}_${h}_${wsegs}_${hsegs}` 
     const cached = this.cache.get( key )
@@ -88,8 +89,8 @@ export class Aquarium {
   plateMaterial(fileName) {
     const texture  = new THREE.TextureLoader().load( fileName )
     texture.anisotropy = 1
-    //const material = new THREE.MeshPhongMaterial({
-    const material = new THREE.MeshBasicMaterial({
+    const material = new THREE.MeshPhongMaterial({
+    //const material = new THREE.MeshBasicMaterial({
       map: texture, 
       //color: 0xffffff, 
       side: THREE.DoubleSide, 
@@ -193,7 +194,7 @@ export class Aquarium {
     const initialPoints = Array(num)
 
     const da     = 2 * Math.PI / initialPoints.length
-    const radius = Common.randomReal(12, 14)
+    const radius = Common.randomReal(15, 18)
     const h = 2.5
     const offY   = Common.randomReal(-h/2.0, h/2.0)
 
@@ -206,7 +207,7 @@ export class Aquarium {
 
     let a = da * Common.random(0, initialPoints.length -1)
     for (let i=0; i < initialPoints.length; ++i) {
-      let x = Math.cos(a) * radius
+      let x = Math.cos(a) * radius * 2
       let z = Math.sin(a) * radius
       let y = offY
 
