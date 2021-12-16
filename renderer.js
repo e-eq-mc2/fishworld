@@ -65,7 +65,7 @@ function init() {
   scene.add( ambientLight )
   
   const axesHelper = new THREE.AxesHelper( 5 )
-  scene.add( axesHelper )
+  //scene.add( axesHelper )
 
   aquarium = new Aquarium(400)
   aquarium.eachFish( f => scene.add(f) )
