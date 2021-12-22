@@ -6,7 +6,7 @@ export class Aquarium {
   constructor(numFish) {
     this.flows  = []
     this.speeds = []
-    this.speedScale = 1.0
+    this.speedScale = 0.6
     this.cache = new Cache()
 
     const baseSpeed   = 0.0003
@@ -28,12 +28,12 @@ export class Aquarium {
     }
   }
 
-  increaseSpeed(ds = 0.1) {
+  increaseSpeed(ds = 0.05) {
     this.speedScale += ds
     return this.speedScale
   }
 
-  decreaseSpeed(ds = 0.1) {
+  decreaseSpeed(ds = 0.05) {
     this.speedScale -= ds
     return this.speedScale
   }
@@ -51,14 +51,14 @@ export class Aquarium {
     curve.curveType = 'centripetal';
     curve.closed = true;
 
-    const i        = Common.random(1, 48)
+    const i        = Common.random(1, 63)
     //const fileName = `img/fish_${i}.png`
     const fileName = `img/${i}.png`
     const material = this.plateMaterial(fileName)
 
     const sizeList = [
       //0.4, 0.4,
-      0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
+      //0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
       0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6,
       1.0, 
       3.0,

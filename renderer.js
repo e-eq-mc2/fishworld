@@ -67,7 +67,7 @@ function init() {
   const axesHelper = new THREE.AxesHelper( 5 )
   //scene.add( axesHelper )
 
-  aquarium = new Aquarium(400)
+  aquarium = new Aquarium(300)
   aquarium.eachFish( f => scene.add(f) )
 
   renderer = new THREE.WebGLRenderer( { antialias: true} )
